@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package lnrpc;
+
+service Lightning {
+    // lncli: `getinfo`
+    // GetInfo returns general information concerning the lightning node including it's identity
+    // pubkey, alias, the chains it is connected to, and information concerning the number of
+    // open+pending channels.
+    rpc GetInfo (GetInfoRequest) returns (GetInfoResponse);
+
+    // lncli: `walletbalance`
+    // WalletBalance returns total unspent outputs(confirmed and unconfirmed), all confirmed
+    // unspent outputs and all unconfirmed unspent outputs under control of the wallet.
+    rpc WalletBalance (WalletBalanceRequest) returns (WalletBalanceResponse);
+
+    // lncli: `newaddress`
+    // NewAddress creates a new address under control of the local wallet.
+    rpc NewAddress (NewAddressRequest) returns (NewAddressResponse);
+
+    // lncli: `sendcoins`
+    // SendCoins executes a request to send coins to a particular address.
+    rpc SendCoins (SendCoinsRequest) returns (SendCoinsResponse);
+}
+
+message GetInfoRequest {
+}
+
+message GetInfoResponse {
+    string version = 1;
+    string identity_pubkey = 2;
+    string alias = 3;
+    // Additional fields omitted for brevity
+}
+
+message WalletBalanceRequest {
+}
+
+message WalletBalanceResponse {
+    // The balance of the wallet
+    int64 total_balance = 1;
+    int64 confirmed_balance = 2;
+    int64 unconfirmed_balance = 3;
+}
+
+enum AddressType {
+    WITNESS_PUBKEY_HASH = 0;
+    NESTED_PUBKEY_HASH = 1;
+    UNUSED_WITNESS_PUBKEY_HASH = 2;
+    UNUSED_NESTED_PUBKEY_HASH = 3;
+}
+
+message NewAddressRequest {
+    // The address type
+    AddressType type = 1;
+}
+
+message NewAddressResponse {
+    // The newly generated wallet address
+    string address = 1;
+}
+
+message SendCoinsRequest {
+    // The address to send coins to
+    string addr = 1;
+    // The amount in satoshis to send
+    int64 amount = 2;
+    // The target number of blocks that this transaction should be confirmed by
+    int32 target_conf = 3;
+    // A manual fee rate set in sat/vbyte that should be used when crafting the transaction
+    int64 sat_per_vbyte = 4;
+    // If set, then the amount field will be ignored, and all coins from the wallet will be sent to the specified address
+    bool send_all = 5;
+    // A label for the transaction
+    string label = 6;
+}
+
+message SendCoinsResponse {
+    // The transaction ID of the transaction
+    string txid = 1;
+} 

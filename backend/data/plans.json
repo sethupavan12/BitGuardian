@@ -1,0 +1,1029 @@
+[
+  [
+    "f0cd6b75-663d-404f-a3b8-7c0630560626",
+    {
+      "id": "f0cd6b75-663d-404f-a3b8-7c0630560626",
+      "ownerId": "alice-pubkey-t1yt6j",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747568594968,
+      "updatedAt": 1747568594968,
+      "status": "executed",
+      "executedAt": 1747568608187,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-mldvilyx",
+          "txid": "tx-c964wz3qtge"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-a862pmwm",
+          "txid": "tx-nc198y49ccl"
+        }
+      ]
+    }
+  ],
+  [
+    "9c642dd7-e591-45c6-a65a-1c3873209daf",
+    {
+      "id": "9c642dd7-e591-45c6-a65a-1c3873209daf",
+      "ownerId": "alice-pubkey-otj0a8",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747569269299,
+      "updatedAt": 1747569269299,
+      "status": "executed",
+      "executedAt": 1747569273333,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-dqbf965m",
+          "txid": "tx-4gnplmbbncq"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-l66r3cfj",
+          "txid": "tx-n4ax8j3trub"
+        }
+      ]
+    }
+  ],
+  [
+    "57b48366-7437-45da-a4b9-b7f991070c6c",
+    {
+      "id": "57b48366-7437-45da-a4b9-b7f991070c6c",
+      "ownerId": "alice-pubkey-q96xf0",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747569772218,
+      "updatedAt": 1747569772218,
+      "status": "executed",
+      "executedAt": 1747570458642,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-5eirhlks",
+          "txid": "tx-r2egfefzmxg"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-ppuoeobo",
+          "txid": "tx-jaov8yn0ulc"
+        }
+      ]
+    }
+  ],
+  [
+    "a42bef01-4225-4ecd-af18-9d3b47c405a6",
+    {
+      "id": "a42bef01-4225-4ecd-af18-9d3b47c405a6",
+      "ownerId": "alice-pubkey-37v0rl",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747570634075,
+      "updatedAt": 1747570634075,
+      "status": "executed",
+      "executedAt": 1747570636329,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-6772cl0v",
+          "txid": "tx-shgbq06fegk"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-s45zc68y",
+          "txid": "tx-5sw1yw6fxzq"
+        }
+      ]
+    }
+  ],
+  [
+    "bcb49dc9-b21d-4690-b957-65e6faa7d639",
+    {
+      "id": "bcb49dc9-b21d-4690-b957-65e6faa7d639",
+      "ownerId": "alice-pubkey-e4vm7k",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747570721977,
+      "updatedAt": 1747570721977,
+      "status": "executed",
+      "executedAt": 1747570724254,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-3pprqq2o",
+          "txid": "tx-l4qoku2kqbb"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-o421hs2q",
+          "txid": "tx-kz5m5wwlstr"
+        }
+      ]
+    }
+  ],
+  [
+    "64436853-4e95-43ed-8ec7-d99038c6bfe8",
+    {
+      "id": "64436853-4e95-43ed-8ec7-d99038c6bfe8",
+      "ownerId": "alice-pubkey-vxx6jy",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747570814169,
+      "updatedAt": 1747570814169,
+      "status": "executed",
+      "executedAt": 1747570817577,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-kfdr5vu0",
+          "txid": "tx-g7762ve0orm"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-8awxwhnw",
+          "txid": "tx-g0p07s0ma74"
+        }
+      ]
+    }
+  ],
+  [
+    "ab32cd1b-8d21-4989-a1a0-c747aa71c0c0",
+    {
+      "id": "ab32cd1b-8d21-4989-a1a0-c747aa71c0c0",
+      "ownerId": "alice-pubkey-4g9lbg",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747572635398,
+      "updatedAt": 1747572635398,
+      "status": "executed",
+      "executedAt": 1747572638074,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-ge4jp31g",
+          "txid": "tx-tvjyin67dda"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-fzvhc2se",
+          "txid": "tx-prtqn7dh96k"
+        }
+      ]
+    }
+  ],
+  [
+    "bd0af1c1-132f-49e4-a76e-fa6bdf052b94",
+    {
+      "id": "bd0af1c1-132f-49e4-a76e-fa6bdf052b94",
+      "ownerId": "alice-pubkey-k0udg5",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747572942591,
+      "updatedAt": 1747572942591,
+      "status": "executed",
+      "executedAt": 1747572945132,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-wp4kxutm",
+          "txid": "tx-bq07hzrrcho"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-72m8otos",
+          "txid": "tx-u4nqf4xos7f"
+        }
+      ]
+    }
+  ],
+  [
+    "281de915-1af3-47e6-a578-5f510be61c79",
+    {
+      "id": "281de915-1af3-47e6-a578-5f510be61c79",
+      "ownerId": "alice-pubkey-qcs9sy",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747573169342,
+      "updatedAt": 1747573169342,
+      "status": "executed",
+      "executedAt": 1747573171718,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "bob-address-co93jybi",
+          "txid": "tx-31xeoc7gh21"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "carol-address-dqwxv8f0",
+          "txid": "tx-hnyoevonkrl"
+        }
+      ]
+    }
+  ],
+  [
+    "04355cbc-89b5-43a8-9d17-b2b22d64452e",
+    {
+      "id": "04355cbc-89b5-43a8-9d17-b2b22d64452e",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 2592000
+      },
+      "createdAt": 1747584955831,
+      "updatedAt": 1747584955831,
+      "status": "executed",
+      "executedAt": 1747584958772,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 665000,
+          "address": "2MsK671GBBWS5ZFJmK2rWm2bYoxVgcPTpHJ",
+          "txid": "85fff2b55a143c9b2c4c806216104c6ea5a8f65b83be1d0f23322ff62b210bc0"
+        },
+        {
+          "heir": "carol",
+          "amount": 285000,
+          "address": "2MzYn91HhSF33dLvvXJvDBbWEBFvXFA3GKS",
+          "txid": "tx-f2tsn8ix2e"
+        }
+      ]
+    }
+  ],
+  [
+    "cca9035c-d159-458c-b54e-7cd3579747d0",
+    {
+      "id": "cca9035c-d159-458c-b54e-7cd3579747d0",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 50
+        },
+        {
+          "name": "carol",
+          "share": 50
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 7,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": true
+      },
+      "createdAt": 1747586488702,
+      "updatedAt": 1747586488702,
+      "status": "executed",
+      "executedAt": 1747586550908,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 4905467,
+          "address": "2N2zzVggKakCTjKSsBGgPxJk48d9xgichdM",
+          "txid": "ec41a68f8cb9fc268f8df8a913bbd76a1ebe55f1fb3f361a2a9c0e132f254ca4"
+        },
+        {
+          "heir": "carol",
+          "amount": 4905467,
+          "address": "2MvGY9SxoAxqR63BVH4t2mooeur5Sktzbrs",
+          "txid": "tx-5gk1zd1iu4v"
+        }
+      ]
+    }
+  ],
+  [
+    "b1646b65-3a44-491f-8958-34b1539a6f9b",
+    {
+      "id": "b1646b65-3a44-491f-8958-34b1539a6f9b",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 0
+        },
+        {
+          "name": "carol",
+          "share": 100
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747606445903,
+      "updatedAt": 1747606445903,
+      "status": "executed",
+      "executedAt": 1747606449541,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 0,
+          "address": "2N2BPPm3vow2Sg9mLuoL42WNQfBd34G55pm",
+          "txid": "tx-7etgkkx2rlh"
+        },
+        {
+          "heir": "carol",
+          "amount": 5143426,
+          "address": "2NFu9HdBsZxmTjt9ujBeBDVeXcRNVePwjaB",
+          "txid": "tx-i10p9s271l"
+        }
+      ]
+    }
+  ],
+  [
+    "610dd274-c18e-4c66-85fb-561fdfc64359",
+    {
+      "id": "610dd274-c18e-4c66-85fb-561fdfc64359",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 5
+        },
+        {
+          "name": "carol",
+          "share": 95
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747606513343,
+      "updatedAt": 1747606513343,
+      "status": "executed",
+      "executedAt": 1747606515836,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 257171,
+          "address": "2Mywr9t1ni5kTav454T1h84gywn7v7CfLWb",
+          "txid": "20ccb7982d861461105c3f4b46ca1bf9520b280fb19564d93f6f873b0e4ae17a"
+        },
+        {
+          "heir": "carol",
+          "amount": 4886255,
+          "address": "2N4zx8wdbC3NoJj3ZjTGsx5iv1CS5oXWRB2",
+          "txid": "tx-dodlyewx53a"
+        }
+      ]
+    }
+  ],
+  [
+    "3a8e6762-4bff-476d-a05d-2f4e1da4731b",
+    {
+      "id": "3a8e6762-4bff-476d-a05d-2f4e1da4731b",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 80
+        },
+        {
+          "name": "carol",
+          "share": 20
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": false,
+        "useEmailVerification": false,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747607238266,
+      "updatedAt": 1747607238266,
+      "status": "executed",
+      "executedAt": 1747607241185,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 3913819,
+          "address": "2MwzDY1fthRSgHrJhvtyyx1aNtC2BzS1n2A",
+          "txid": "23c5eda81759f31f072f80e4203c054e923309b8f485cccf35efdb121135a4f0"
+        },
+        {
+          "heir": "carol",
+          "amount": 978454,
+          "address": "2MueT2uffdpPbE7xBvhRaaFA79YAq1dWcZE",
+          "txid": "tx-bb3n6f1sq4"
+        }
+      ]
+    }
+  ],
+  [
+    "01119044-c072-4696-bc58-a54784d58195",
+    {
+      "id": "01119044-c072-4696-bc58-a54784d58195",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 15
+        },
+        {
+          "name": "carol",
+          "share": 85
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 7,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747607320007,
+      "updatedAt": 1747607320007,
+      "status": "executed",
+      "executedAt": 1747607322564,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 175095,
+          "address": "2MwwtUd9QmPqj3RNT7LZ1MfGWN7zkJcfSQ9",
+          "txid": "9b6d1cca3364e521c6e8b62a9e3b5b4798b107caba6e0007914ed5b0a25df6b5"
+        },
+        {
+          "heir": "carol",
+          "amount": 992209,
+          "address": "2N37591VhF8ZCyNiV7uKfMK37c4F4TUMYdF",
+          "txid": "tx-sg10073ekir"
+        }
+      ]
+    }
+  ],
+  [
+    "c72298fb-5265-40fa-836a-efeb675050fe",
+    {
+      "id": "c72298fb-5265-40fa-836a-efeb675050fe",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 5
+        },
+        {
+          "name": "carol",
+          "share": 95
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 7,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747607417226,
+      "updatedAt": 1747607417226,
+      "status": "executed",
+      "executedAt": 1747607420359,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 4799706,
+          "address": "2MugBtKgQptTWrGWgSpSs3gy35BDiPh8Naz",
+          "txid": "2173d62d5f9e6e6fbfaa683bfedfe91a7d6dabe07a200cbb6beb39cd755424b9"
+        },
+        {
+          "heir": "carol",
+          "amount": 91194419,
+          "address": "2NDC5uZ5RrTpNTEdEyv21RSQEnTAqrYtabY",
+          "txid": "tx-9ibai1y3dn"
+        }
+      ]
+    }
+  ],
+  [
+    "cb36834c-33ff-40f9-a22d-e4cfc97caaec",
+    {
+      "id": "cb36834c-33ff-40f9-a22d-e4cfc97caaec",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 5
+        },
+        {
+          "name": "carol",
+          "share": 95
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747607569636,
+      "updatedAt": 1747607569636,
+      "status": "executed",
+      "executedAt": 1747607573056,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 4571354,
+          "address": "2Mz8VckoVTiQKym3YnnuxGPWF6M3io9GWi4",
+          "txid": "a6fe4077d55d6dcbfbc4ee2f8d51009b8c04f93b504cd12f8d33fe0caaeef744"
+        },
+        {
+          "heir": "carol",
+          "amount": 944419,
+          "address": "2N4tn6c6TzX3doAQf8Gcx1FTaTTu6HCNt7r",
+          "txid": "2efe6f49b81a092ac22aabadfeef9b0b6cf67635505cb874c16f976c6c942554"
+        }
+      ]
+    }
+  ],
+  [
+    "2e97281d-b881-4796-9e98-4dc0f630f7bf",
+    {
+      "id": "2e97281d-b881-4796-9e98-4dc0f630f7bf",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 5
+        },
+        {
+          "name": "carol",
+          "share": 95
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747607615818,
+      "updatedAt": 1747607615818,
+      "status": "executed",
+      "executedAt": 1747607618310,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 4308671,
+          "address": "2N4Q37QFNsvsVHohmP436kS3x6JrQNtB7Ev",
+          "txid": "93cf26f312df34bbee13a98c2af1ee495ea6ad34f60b4f018b2dc99aeec64360"
+        },
+        {
+          "heir": "carol",
+          "amount": 944419,
+          "address": "2N8LXDKrN1u3W2nVdhGuh8o7b8v8JpMqBoN",
+          "txid": "9ccff6ba7faa7acde5b45328a28d93e13478179402e71a68e2c80da20cbd334a"
+        }
+      ]
+    }
+  ],
+  [
+    "0cf2c65e-d7cd-4e5a-b2fa-f3b5302599ac",
+    {
+      "id": "0cf2c65e-d7cd-4e5a-b2fa-f3b5302599ac",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 0
+        },
+        {
+          "name": "carol",
+          "share": 100
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 7,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747607647099,
+      "updatedAt": 1747607647099,
+      "status": "executed",
+      "executedAt": 1747607650323,
+      "distributions": [
+        {
+          "heir": "carol",
+          "amount": 81169310,
+          "address": "2MtL5dEQfEkkMEt6XCEH4sH2zZ47YXnKDzU",
+          "txid": "f93c99f0b89ba0807e371b45ddfad448ff02961029a14fb8ddd7d70310cc2886"
+        }
+      ]
+    }
+  ],
+  [
+    "60c5b740-6c58-4956-97d5-ebaa0e4322a6",
+    {
+      "id": "60c5b740-6c58-4956-97d5-ebaa0e4322a6",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 90
+        },
+        {
+          "name": "carol",
+          "share": 10
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747607965263,
+      "updatedAt": 1747607965263,
+      "status": "executed",
+      "executedAt": 1747607970195,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 3646462,
+          "address": "2N2ocg1zMbbatUL2cT417NxpCdLoohQEEf3",
+          "txid": "aacf7d01cc21a6f2068985b8e37018c74b7db81462632098fc753edc5b773c55"
+        },
+        {
+          "heir": "carol",
+          "amount": 31093,
+          "address": "2N4v1kAtfEqBEA3gdCaMqjCBgSSZg1yji3o",
+          "txid": "cc4625bfd6cfa3efc39f3b1960cd41994743cff6fc0e001f80020471cfd1ee81"
+        }
+      ]
+    }
+  ],
+  [
+    "f36d35b5-f05d-438d-a1a6-955bddeb27bd",
+    {
+      "id": "f36d35b5-f05d-438d-a1a6-955bddeb27bd",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 65
+        },
+        {
+          "name": "carol",
+          "share": 35
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747608098777,
+      "updatedAt": 1747608098777,
+      "status": "executed",
+      "executedAt": 1747608102219,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 351983,
+          "address": "2MwNeseLCzLRCygcZ4qEWCkf86h5fsWGP2D",
+          "txid": "8ae810038af5bf5c5502e4dab30fcce2f8fc3dc818beeb3420936b8e3f1fb9db"
+        }
+      ]
+    }
+  ],
+  [
+    "95d52af9-2fe0-439a-bcf4-f6d964f01d01",
+    {
+      "id": "95d52af9-2fe0-439a-bcf4-f6d964f01d01",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 85
+        },
+        {
+          "name": "carol",
+          "share": 15
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747608156594,
+      "updatedAt": 1747608156594,
+      "status": "executed",
+      "executedAt": 1747608158655,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 8242904,
+          "address": "2N1uQu8GoKRGUp6xVAfTCXQ4DhtqJPaHFoh",
+          "txid": "97ea67f035d997e19a562789e08cc1259333faa506a60552806201fb6b4e0dd9"
+        },
+        {
+          "heir": "carol",
+          "amount": 29630,
+          "address": "2MvDb2rR6SpxZ7HXYzZon95ciLzxNCxiggs",
+          "txid": "fa82c8b9a80634d4e08f3f43ec8a16206b6310b1b499771169c451129efd4028"
+        }
+      ]
+    }
+  ],
+  [
+    "8e7c6003-8c99-4ce1-a51d-9b5a0ddcc1ad",
+    {
+      "id": "8e7c6003-8c99-4ce1-a51d-9b5a0ddcc1ad",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 90
+        },
+        {
+          "name": "carol",
+          "share": 10
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747608218508,
+      "updatedAt": 1747608218508,
+      "status": "executed",
+      "executedAt": 1747608222055,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 1642024,
+          "address": "2Mwvk6tyYkTmhNUtsyQjLXmZrk1rrefZVeW",
+          "txid": "84d170361ec05daab2a6a8adb6ff6d138fe10c6d928b6838abf2817165f791e2"
+        },
+        {
+          "heir": "carol",
+          "amount": 19753,
+          "address": "2N864XHBE6xDsvexe7j6rhhhw2yWh5CMema",
+          "txid": "930ce7c534bd454ff9e992481908f2cad4cced448677de072430880a8da25c4d"
+        }
+      ]
+    }
+  ],
+  [
+    "c75c1991-84fb-42d6-a7a5-98070c182858",
+    {
+      "id": "c75c1991-84fb-42d6-a7a5-98070c182858",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 80
+        },
+        {
+          "name": "carol",
+          "share": 20
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747608281691,
+      "updatedAt": 1747608281691,
+      "status": "executed",
+      "executedAt": 1747608291451,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 185683,
+          "address": "2N5dGYT48hgbtdric1yeWEyrVMHB9JbQiDd",
+          "txid": "e971bd3e20776287ec04fe92979629aec79a9d1bbf56abb83a5f3ad6906c9b7d"
+        }
+      ]
+    }
+  ],
+  [
+    "afb68c3c-41b1-435b-a2a3-bb57b9530dc9",
+    {
+      "id": "afb68c3c-41b1-435b-a2a3-bb57b9530dc9",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747608370921,
+      "updatedAt": 1747608370921,
+      "status": "executed",
+      "executedAt": 1747608388177,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 60547277,
+          "address": "2NEdXBAUw8wbGE6DnrDJCm6Vao1qM88o8JW",
+          "txid": "6297a56348b5075ba5d94dca9197ed83741f7f97b63c7acbbebe8ba940056079"
+        },
+        {
+          "heir": "carol",
+          "amount": 13833,
+          "address": "2MzNLtCXHLA1z9Zhmcn1aGD1KZY4Cs83qSw",
+          "txid": "67b59cb269f3b4470dfdb88a8d45617c0b6a9f201e67562c0ee1d9175aebbb5c"
+        }
+      ]
+    }
+  ],
+  [
+    "d0b8fd4f-8338-4dfe-8ab4-c863b624eb33",
+    {
+      "id": "d0b8fd4f-8338-4dfe-8ab4-c863b624eb33",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 5
+        },
+        {
+          "name": "carol",
+          "share": 95
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747608505026,
+      "updatedAt": 1747608505026,
+      "status": "executed",
+      "executedAt": 1747608508760,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 1447445,
+          "address": "2N3dVRyatiNh88pkjCSk3PE97dhMU5nYWm6",
+          "txid": "56e8a7b8e9e8b1a08f2b7b7400ba01884e863b33b17406ab322639433ebd4362"
+        },
+        {
+          "heir": "carol",
+          "amount": 43804,
+          "address": "2N3UGFFrNT7egcx256MbLxE3eAzTKoP8irY",
+          "txid": "5588a16f71d0c883b588f2223a0c22287a8c9bd127ee7343536a7b605ac93c4f"
+        }
+      ]
+    }
+  ]
+]

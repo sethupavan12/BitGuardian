@@ -1,0 +1,45 @@
+{
+  "server": {
+    "port": 3000
+  },
+  "bitcoin": {
+    "rpc": {
+      "host": "127.0.0.1",
+      "port": 18443,
+      "user": "polaruser",
+      "pass": "polarpass",
+      "network": "regtest"
+    }
+  },
+  "lnd": {
+    "nodes": {
+      "owner": {
+        "name": "alice",
+        "host": "127.0.0.1",
+        "port": 10001,
+        "restHost": "127.0.0.1",
+        "restPort": 8081,
+        "certPath": "/Users/sethupavan/.polar/networks/1/volumes/lnd/alice/tls.cert",
+        "macaroonPath": "/Users/sethupavan/.polar/networks/1/volumes/lnd/alice/data/chain/bitcoin/regtest/admin.macaroon"
+      },
+      "heir1": {
+        "name": "bob",
+        "host": "127.0.0.1", 
+        "port": 10002,
+        "restHost": "127.0.0.1",
+        "restPort": 8082,
+        "certPath": "/Users/sethupavan/.polar/networks/1/volumes/lnd/bob/tls.cert",
+        "macaroonPath": "/Users/sethupavan/.polar/networks/1/volumes/lnd/bob/data/chain/bitcoin/regtest/admin.macaroon"
+      },
+      "heir2": {
+        "name": "carol",
+        "host": "127.0.0.1",
+        "port": 10003,
+        "restHost": "127.0.0.1",
+        "restPort": 8083,
+        "certPath": "/Users/sethupavan/.polar/networks/1/volumes/lnd/carol/tls.cert",
+        "macaroonPath": "/Users/sethupavan/.polar/networks/1/volumes/lnd/carol/data/chain/bitcoin/regtest/admin.macaroon"
+      }
+    }
+  }
+} 
