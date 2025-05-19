@@ -1,4 +1,15 @@
 const Client = require('bitcoin-core');
+const bitcoin = require('bitcoinjs-lib');
+const ecc = require('@bitcoinerlab/secp256k1');
+const { ECPairFactory } = require('ecpair');
+
+bitcoin.initEccLib(ecc);
+const ECPair = ECPairFactory(ecc);
+
+// Helper function to compile script elements into a Buffer
+function compileScript(scriptElements) {
+  return bitcoin.script.compile(scriptElements);
+}
 
 class BitcoinClient {
   constructor(config) {
@@ -9,7 +20,8 @@ class BitcoinClient {
     const port = config.port || 18443;
     const user = config.user || 'polaruser';
     const pass = config.pass || 'polarpass';
-    const network = config.network || 'regtest'; // network is not directly used by bitcoin-core 2.x constructor but good to have
+    this.networkString = config.network || 'regtest'; // 'regtest', 'testnet', 'bitcoin'
+    this.bitcoinJsNetwork = bitcoin.networks[this.networkString] || bitcoin.networks.regtest;
 
     // For bitcoin-core 2.x.x, the 'host' parameter is the full base URL.
     const rpcFullUrl = `http://${user}:${pass}@${hostOnly}:${port}`;
@@ -17,11 +29,85 @@ class BitcoinClient {
     this.client = new Client({
       host: rpcFullUrl, // This is the full base URL for RPC calls
       timeout: config.timeout || 30000, // Optional: set a timeout
-      // username, password, port are now part of the rpcFullUrl for bitcoin-core 2.x
-      // Other options like 'wallet' or specific 'headers' could be added if needed.
     });
     
-    console.log(`Initialized Bitcoin client (network: ${network}) using RPC URL: ${rpcFullUrl}`);
+    console.log(`Initialized Bitcoin client (network: ${this.networkString}) using RPC URL: ${rpcFullUrl}`);
+  }
+
+  getNetwork() {
+    return this.bitcoinJsNetwork;
+  }
+
+  // Aethelred Protocol Functions
+  /**
+   * Creates the Aethelred witness script.
+   * @param {Buffer[]} primaryHeirPubkeys Array of public key buffers for primary heirs.
+   * @param {Buffer} recoveryPubkey Public key buffer for the ultimate recovery agent.
+   * @param {number} lockTimePath2 CLTV value (block height or timestamp) for Path 2 (survivor).
+   * @param {number} lockTimePath3 CLTV value (block height or timestamp) for Path 3 (recovery), must be > lockTimePath2.
+   * @returns {Buffer} The compiled P2WSH witness script.
+   */
+  createAethelredWitnessScript(primaryHeirPubkeys, recoveryPubkey, lockTimePath2, lockTimePath3) {
+    if (!primaryHeirPubkeys || primaryHeirPubkeys.length === 0) {
+      throw new Error('At least one primary heir public key is required.');
+    }
+    if (!recoveryPubkey) {
+      throw new Error('Recovery public key is required.');
+    }
+    if (lockTimePath3 <= lockTimePath2) {
+      throw new Error('LockTime_Path3 must be strictly greater than LockTime_Path2.');
+    }
+
+    const primaryM = primaryHeirPubkeys.length; // M-of-N, where N is also primaryHeirPubkeys.length for "all must sign"
+    const survivorM = 1; // For survivor path, typically 1-of-N
+
+    const scriptElements = [
+      // Path 1: Primary Heirs (M-of-N, e.g., 2-of-2)
+      bitcoin.opcodes.OP_IF,
+      bitcoin.script.number.encode(primaryM),
+      ...primaryHeirPubkeys,
+      bitcoin.script.number.encode(primaryHeirPubkeys.length),
+      bitcoin.opcodes.OP_CHECKMULTISIG,
+      // Path 1 failed or not attempted; try Path 2
+      bitcoin.opcodes.OP_ELSE,
+      bitcoin.script.number.encode(lockTimePath2),
+      bitcoin.opcodes.OP_CHECKLOCKTIMEVERIFY,
+      bitcoin.opcodes.OP_DROP,
+      // Attempt Path 2 Execution
+      bitcoin.opcodes.OP_IF,
+      // Path 2: Survivor Heir(s) (K-of-N, e.g., 1-of-N from Primary Heirs)
+      bitcoin.script.number.encode(survivorM),
+      ...primaryHeirPubkeys,
+      bitcoin.script.number.encode(primaryHeirPubkeys.length),
+      bitcoin.opcodes.OP_CHECKMULTISIG,
+      // Path 2 failed or not attempted; try Path 3
+      bitcoin.opcodes.OP_ELSE,
+      bitcoin.script.number.encode(lockTimePath3),
+      bitcoin.opcodes.OP_CHECKLOCKTIMEVERIFY,
+      bitcoin.opcodes.OP_DROP,
+      // Path 3: Ultimate Recovery (1-of-1 Signature: RecoveryAgent)
+      recoveryPubkey,
+      bitcoin.opcodes.OP_CHECKSIG,
+      bitcoin.opcodes.OP_ENDIF,
+      bitcoin.opcodes.OP_ENDIF,
+    ];
+    return compileScript(scriptElements);
+  }
+
+  /**
+   * Derives the P2WSH address for an Aethelred witness script.
+   * @param {Buffer} witnessScript The compiled Aethelred witness script.
+   * @returns {string} The P2WSH address.
+   */
+  getAethelredP2WSHAddress(witnessScript) {
+    const p2wsh = bitcoin.payments.p2wsh({
+      redeem: { output: witnessScript, network: this.bitcoinJsNetwork },
+      network: this.bitcoinJsNetwork,
+    });
+    if (!p2wsh.address) {
+        throw new Error('Failed to generate P2WSH address. Ensure witness script and network are valid.');
+    }
+    return p2wsh.address;
   }
   
   async getBlockCount() {
@@ -71,4 +157,4 @@ class BitcoinClient {
   }
 }
 
-module.exports = { BitcoinClient }; 
+module.exports = { BitcoinClient, compileScript }; 

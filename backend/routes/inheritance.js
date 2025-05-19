@@ -42,4 +42,21 @@ router.post('/plans/:id/execute', async (req, res) => {
   }
 });
 
+// Create an Aethelred Legacy Lockbox plan
+router.post('/aethelred/create-plan', async (req, res) => {
+  try {
+    const planDetails = await inheritanceService.createAethelredLegacyLockbox(req.body);
+    res.status(201).json({ 
+      success: true, 
+      message: 'Legacy Lockbox plan configured successfully.',
+      ...planDetails 
+    });
+  } catch (error) {
+    // Log the error for server-side debugging
+    console.error('Error creating Aethelred plan:', error.message);
+    // Send a user-friendly error message
+    res.status(400).json({ success: false, error: error.message }); // 400 for client errors, 500 for server issues
+  }
+});
+
 module.exports = router; 

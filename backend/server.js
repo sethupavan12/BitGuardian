@@ -20,7 +20,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Start server
-const port = config.get('server.port') || 3000;
+const port = 3001; // Hardcoded to always use port 3001
 app.listen(port, () => {
   console.log(`BitGuardian server running on port ${port}`);
 }); 

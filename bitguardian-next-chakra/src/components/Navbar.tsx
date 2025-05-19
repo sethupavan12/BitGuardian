@@ -17,6 +17,7 @@ import {
   useBreakpointValue,
   useDisclosure,
   Container,
+  HStack,
 } from '@chakra-ui/react'
 import {
   HamburgerIcon,
@@ -28,90 +29,99 @@ import {
 import { InfoModal } from './InfoModal'
 import Link from 'next/link'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import { FaShieldAlt } from 'react-icons/fa'
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure()
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
+  
   // Define theme-aware colors
-  const navBg = useColorModeValue('light.surface', 'dark.surface');
-  const navTextColor = useColorModeValue('light.text', 'dark.text');
-  const borderColor = useColorModeValue('light.border', 'dark.border');
-  const brandButtonBg = useColorModeValue('light.primary', 'dark.primary');
-  const brandButtonHoverBg = useColorModeValue('light.secondary', 'dark.secondary'); // Or a darker/lighter shade of primary
-  const brandButtonTextColor = useColorModeValue('white', 'dark.text'); // Ensure contrast
+  const navBg = useColorModeValue('white', 'gray.900');
+  const navBorder = useColorModeValue('gray.100', 'gray.800');
+  const navText = useColorModeValue('gray.800', 'white');
+  const logoColor = useColorModeValue('brand.500', 'brand.400');
 
   return (
-    <Box borderBottom={1} borderStyle={'solid'} borderColor={borderColor} bg={navBg}>
-      <Flex
-        color={navTextColor}
-        minH={'60px'}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        align={'center'}
-      >
+    <Box 
+      borderBottom="1px" 
+      borderStyle={'solid'} 
+      borderColor={navBorder} 
+      bg={navBg}
+      position="sticky"
+      top={0}
+      zIndex={1000}
+      py={2}
+      boxShadow="sm"
+    >
+      <Container maxW="container.xl">
         <Flex
-          flex={{ base: 1, md: 'auto' }}
-          ml={{ base: -2 }}
-          display={{ base: 'flex', md: 'none' }}
+          color={navText}
+          minH={'60px'}
+          align={'center'}
+          justify="space-between"
         >
-          <IconButton
-            onClick={onToggle}
-            icon={
-              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
-            }
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-        </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+          <HStack spacing={2}>
+            <Icon as={FaShieldAlt} w={8} h={8} color={logoColor} />
           <Text
             as={Link}
             href="/"
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
+              fontSize="xl"
             fontWeight="bold"
+              letterSpacing="tight"
+              display="flex"
+              alignItems="center"
           >
             BitGuardian
           </Text>
+          </HStack>
 
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+          <Flex display={{ base: 'none', md: 'flex' }}>
             <DesktopNav />
-          </Flex>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={{base: 2, md: 4}}
-        >
+          <Flex>
+            <HStack spacing={4}>
           <Button
             as={Link}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
-            color={brandButtonTextColor}
-            bg={brandButtonBg}
             href={'/create'}
-            _hover={{
-              bg: brandButtonHoverBg,
-            }}
+                colorScheme="brand"
+                size="sm"
           >
             Create Plan
           </Button>
+              
           <IconButton
             aria-label="About BitGuardian"
             icon={<InfoIcon />}
             onClick={onModalOpen}
             variant="ghost"
+                colorScheme="gray"
+                size="sm"
           />
+              
           <ThemeSwitcher />
-        </Stack>
+              
+              <IconButton
+                display={{ base: 'flex', md: 'none' }}
+                onClick={onToggle}
+                icon={
+                  isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                }
+                variant={'ghost'}
+                aria-label={'Toggle Navigation'}
+                size="sm"
+              />
+            </HStack>
+          </Flex>
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>
+      </Container>
       
       <InfoModal isOpen={isModalOpen} onClose={onModalClose} />
     </Box>
@@ -119,15 +129,16 @@ export default function Navbar() {
 }
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue('light.textSecondary', 'dark.textSecondary')
-  const linkHoverColor = useColorModeValue('light.text', 'dark.text')
-  const popoverContentBgColor = useColorModeValue('light.surface', 'dark.surface')
+  const linkColor = useColorModeValue('gray.600', 'gray.200')
+  const linkHoverColor = useColorModeValue('brand.600', 'brand.300')
+  const popoverContentBgColor = useColorModeValue('white', 'gray.800')
+  const popoverBorderColor = useColorModeValue('gray.200', 'gray.700')
 
   return (
-    <Stack direction={'row'} spacing={4}>
+    <HStack spacing={8}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
+          <Popover trigger={'hover'} placement={'bottom-start'} gutter={12}>
             <PopoverTrigger>
               <ChakraLink
                 as={Link}
@@ -147,12 +158,14 @@ const DesktopNav = () => {
 
             {navItem.children && (
               <PopoverContent
-                border={0}
-                boxShadow={'xl'}
+                border={1}
+                borderStyle="solid"
+                borderColor={popoverBorderColor}
                 bg={popoverContentBgColor}
                 p={4}
-                rounded={'xl'}
+                rounded={'md'}
                 minW={'sm'}
+                boxShadow="xl"
               >
                 <Stack>
                   {navItem.children.map((child) => (
@@ -164,7 +177,7 @@ const DesktopNav = () => {
           </Popover>
         </Box>
       ))}
-    </Stack>
+    </HStack>
   )
 }
 
@@ -177,18 +190,20 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
       display={'block'}
       p={2}
       rounded={'md'}
-      _hover={{ bg: useColorModeValue('brand.50', 'dark.surface') }}
+      _hover={{ bg: useColorModeValue('brand.50', 'gray.700') }}
     >
       <Stack direction={'row'} align={'center'}>
         <Box>
           <Text
             transition={'all .3s ease'}
-            _groupHover={{ color: useColorModeValue('light.primary', 'dark.primary') }}
+            _groupHover={{ color: useColorModeValue('brand.500', 'brand.300') }}
             fontWeight={500}
           >
             {label}
           </Text>
-          <Text fontSize={'sm'}>{subLabel}</Text>
+          <Text fontSize={'sm'} color={useColorModeValue('gray.500', 'gray.400')}>
+            {subLabel}
+          </Text>
         </Box>
         <Flex
           transition={'all .3s ease'}
@@ -209,19 +224,34 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 const MobileNav = () => {
   return (
     <Stack
-      bg={useColorModeValue('light.surface', 'dark.surface')}
+      bg={useColorModeValue('white', 'gray.800')}
       p={4}
       display={{ md: 'none' }}
+      borderRadius="md"
+      my={2}
+      boxShadow="md"
     >
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
+      <Button
+        as={Link}
+        href="/create"
+        w="full"
+        colorScheme="brand"
+        size="sm"
+        mt={2}
+      >
+        Create Plan
+      </Button>
     </Stack>
   )
 }
 
 const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure()
+  const textColor = useColorModeValue('gray.600', 'gray.200')
+  const hoverBg = useColorModeValue('gray.50', 'gray.700')
 
   return (
     <Stack spacing={4} onClick={children && onToggle}>
@@ -233,11 +263,13 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         align={'center'}
         _hover={{
           textDecoration: 'none',
+          bg: hoverBg,
+          borderRadius: 'md',
         }}
       >
         <Text
-          fontWeight={600}
-          color={useColorModeValue('light.text', 'dark.text')}
+          fontWeight={500}
+          color={textColor}
         >
           {label}
         </Text>
@@ -268,6 +300,10 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
                 as={Link}
                 py={2}
                 href={child.href ?? '#'}
+                color={textColor}
+                _hover={{
+                  color: useColorModeValue('brand.500', 'brand.300'),
+                }}
               >
                 {child.label}
               </ChakraLink>
@@ -287,15 +323,37 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: 'Home',
-    href: '/',
-  },
-  {
     label: 'Dashboard',
     href: '/dashboard',
   },
   {
-    label: 'Create Plan',
+    label: 'Plans',
+    children: [
+      {
+        label: 'View My Plans',
+        subLabel: 'See all your inheritance plans',
+        href: '/dashboard',
+      },
+      {
+        label: 'Create New Plan',
+        subLabel: 'Set up a new inheritance plan',
     href: '/create',
+      },
+    ],
+  },
+  {
+    label: 'Learn',
+    children: [
+      {
+        label: 'Documentation',
+        subLabel: 'How BitGuardian works',
+        href: '#',
+      },
+      {
+        label: 'FAQ',
+        subLabel: 'Frequently asked questions',
+        href: '#',
+      },
+    ],
   },
 ] 
