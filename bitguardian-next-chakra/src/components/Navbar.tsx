@@ -29,6 +29,7 @@ import {
 import { InfoModal } from './InfoModal'
 import Link from 'next/link'
 import { ThemeSwitcher } from './ThemeSwitcher'
+import { ModeSwitcher } from './ModeSwitcher'
 import { FaShieldAlt } from 'react-icons/fa'
 
 export default function Navbar() {
@@ -102,6 +103,7 @@ export default function Navbar() {
                 size="sm"
           />
               
+          <ModeSwitcher />
           <ThemeSwitcher />
               
               <IconButton
@@ -347,12 +349,12 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Documentation',
         subLabel: 'How BitGuardian works',
-        href: '#',
+        href: '/learn',
       },
       {
         label: 'FAQ',
         subLabel: 'Frequently asked questions',
-        href: '#',
+        href: '/faq',
       },
     ],
   },

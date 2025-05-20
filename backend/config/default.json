@@ -41,5 +41,16 @@
         "macaroonPath": "/Users/sethupavan/.polar/networks/1/volumes/lnd/carol/data/chain/bitcoin/regtest/admin.macaroon"
       }
     }
+  },
+  "exSat": {
+    "enabled": true,
+    "endpoint": "https://api.exsat.network/testnet",
+    "apiKey": "demo_key"
+  },
+  "rebarShield": {
+    "enabled": true,
+    "endpoint": "https://shield.rebarlabs.io/v1",
+    "apiKey": "demo_key",
+    "fallbackToPublic": true
   }
 } 

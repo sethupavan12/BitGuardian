@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import {
@@ -50,10 +50,17 @@ import {
   useColorModeValue,
   Grid,
   GridItem,
-  Badge
+  Badge,
+  IconButton
 } from '@chakra-ui/react'
 import Link from 'next/link'
-import { FaClock, FaCalendarAlt, FaUserFriends, FaShieldAlt, FaPercent } from 'react-icons/fa'
+import { FaClock, FaCalendarAlt, FaUserFriends, FaShieldAlt, FaPercent, FaTrash, FaLock } from 'react-icons/fa'
+import {
+  AddIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon
+} from '@chakra-ui/icons'
 
 // const API_URL = 'http://localhost:3001/api' // TODO: Use env var
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'; // Fallback for safety
@@ -61,6 +68,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'; 
 interface Heir {
   name: string;
   share: number;
+  address?: string; // Add optional Bitcoin address
 }
 
 interface VerificationSettings {
@@ -90,6 +98,7 @@ export default function CreatePlan() {
   const toast = useToast()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [tabIndex, setTabIndex] = useState(0)
   
   // Colors
   const cardBg = useColorModeValue('white', 'gray.700')
@@ -129,6 +138,31 @@ export default function CreatePlan() {
     }
   })
 
+  // Add a state to track current mode
+  const [isProdMode, setIsProdMode] = useState(false);
+  
+  // Add a useEffect to check the mode
+  useEffect(() => {
+    const checkMode = () => {
+      const mode = localStorage.getItem('bitguardian-mode');
+      setIsProdMode(mode === 'prod');
+    };
+    
+    // Check on mount
+    checkMode();
+    
+    // Listen for mode changes
+    const handleModeChange = (event: any) => {
+      checkMode();
+    };
+    
+    window.addEventListener('modeChanged', handleModeChange);
+    
+    return () => {
+      window.removeEventListener('modeChanged', handleModeChange);
+    };
+  }, []);
+
   const handleAllocationPercentageChange = (valueAsString: string, valueAsNumber: number) => {
     setNewPlan({
       ...newPlan,
@@ -144,22 +178,54 @@ export default function CreatePlan() {
   };
 
   const handleHeirShareChange = (heirIndex: number, value: number) => {
-    const updatedHeirs = [...newPlan.heirs]
+    const updatedHeirs = [...newPlan.heirs];
+    const oldShare = updatedHeirs[heirIndex].share;
+    const shareDiff = value - oldShare;
     
-    updatedHeirs[heirIndex].share = value
-    
-    const otherHeirIndex = heirIndex === 0 ? 1 : 0
-    if (updatedHeirs.length > 1) {
-      updatedHeirs[otherHeirIndex].share = 100 - value
-    } else if (updatedHeirs.length === 1) {
-      updatedHeirs[0].share = 100;
+    // If there are only 2 heirs, adjust the other heir directly
+    if (updatedHeirs.length === 2) {
+      const otherHeirIndex = heirIndex === 0 ? 1 : 0;
+      updatedHeirs[heirIndex].share = value;
+      updatedHeirs[otherHeirIndex].share = Math.max(0, 100 - value);
+    } else {
+      // For multiple heirs, distribute the change proportionally among other heirs
+      updatedHeirs[heirIndex].share = value;
+      
+      // Calculate total shares of other heirs
+      const otherHeirsShare = updatedHeirs.reduce((sum, heir, idx) => 
+        idx !== heirIndex ? sum + heir.share : sum, 0);
+      
+      if (otherHeirsShare > 0) {
+        // Distribute the difference proportionally
+        for (let i = 0; i < updatedHeirs.length; i++) {
+          if (i !== heirIndex) {
+            const proportion = updatedHeirs[i].share / otherHeirsShare;
+            updatedHeirs[i].share = Math.max(1, Math.floor(updatedHeirs[i].share - (shareDiff * proportion)));
+          }
+        }
+      }
+      
+      // Ensure total is exactly 100%
+      const totalAfterAdjustment = updatedHeirs.reduce((sum, heir) => sum + heir.share, 0);
+      if (totalAfterAdjustment !== 100) {
+        // Find the heir with the largest share (except the one being changed)
+        let largestShareIdx = heirIndex === 0 ? 1 : 0;
+        for (let i = 0; i < updatedHeirs.length; i++) {
+          if (i !== heirIndex && updatedHeirs[i].share > updatedHeirs[largestShareIdx].share) {
+            largestShareIdx = i;
+          }
+        }
+        
+        // Adjust to make total exactly 100%
+        updatedHeirs[largestShareIdx].share += (100 - totalAfterAdjustment);
+      }
     }
     
     setNewPlan({
       ...newPlan,
       heirs: updatedHeirs
-    })
-  }
+    });
+  };
 
   const handleInactivityPeriodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setNewPlan({
@@ -214,21 +280,21 @@ export default function CreatePlan() {
       try {
         // Try the API first
         const response = await axios.post(`${API_URL}/inheritance/plans`, newPlan)
-        
-        toast({
-          title: 'Plan created',
-          description: 'Inheritance plan created successfully!',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        })
-        
+      
+      toast({
+        title: 'Plan created',
+        description: 'Inheritance plan created successfully!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      })
+      
         // If we have a plan ID from the API, redirect to that plan
         if (response.data && response.data.id) {
           router.push(`/plans/${response.data.id}`)
         } else {
           // Otherwise just go to the dashboard
-          router.push('/dashboard')
+      router.push('/dashboard')
         }
       } catch (apiError) {
         console.warn('API error:', apiError)
@@ -260,6 +326,127 @@ export default function CreatePlan() {
   const tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate() + 1)
   const minDate = tomorrow.toISOString().split('T')[0]
+
+  // Function to handle tab change
+  const handleTabChange = (index: number) => {
+    setTabIndex(index)
+  }
+  
+  // Function to go to next tab
+  const goToNextTab = () => {
+    if (tabIndex < 3) { // We have 4 tabs (0-3)
+      setTabIndex(tabIndex + 1)
+    }
+  }
+  
+  // Function to go to previous tab
+  const goToPrevTab = () => {
+    if (tabIndex > 0) {
+      setTabIndex(tabIndex - 1)
+    }
+  }
+
+  // Add a function to add new heirs
+  const addNewHeir = () => {
+    const isProdMode = localStorage.getItem('bitguardian-mode') === 'prod';
+    if (!isProdMode && newPlan.heirs.length >= 2) {
+      toast({
+        title: 'Demo Mode Limitation',
+        description: 'Demo mode supports maximum 2 heirs. Switch to Production mode to add more heirs.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    // Calculate default share
+    const currentTotal = newPlan.heirs.reduce((sum, heir) => sum + heir.share, 0);
+    const remainingShare = Math.max(0, 100 - currentTotal);
+    const shareForNew = remainingShare > 0 ? remainingShare : Math.floor(100 / (newPlan.heirs.length + 1));
+    
+    // Adjust existing shares if needed
+    let updatedHeirs = [...newPlan.heirs];
+    if (remainingShare <= 0) {
+      updatedHeirs = updatedHeirs.map(heir => ({
+        ...heir,
+        share: Math.floor(heir.share * (newPlan.heirs.length) / (newPlan.heirs.length + 1))
+      }));
+    }
+    
+    // Add new heir
+    updatedHeirs.push({
+      name: `heir${newPlan.heirs.length + 1}`,
+      share: shareForNew
+    });
+    
+    setNewPlan({
+      ...newPlan,
+      heirs: updatedHeirs
+    });
+  };
+  
+  // Function to remove an heir
+  const removeHeir = (index: number) => {
+    if (newPlan.heirs.length <= 2) {
+      toast({
+        title: 'Minimum Heirs',
+        description: 'You need at least 2 heirs for an inheritance plan.',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    
+    const removedShare = newPlan.heirs[index].share;
+    const remainingHeirs = newPlan.heirs.length - 1;
+    
+    // Remove the heir and redistribute their share
+    const updatedHeirs = newPlan.heirs.filter((_, idx) => idx !== index).map(heir => ({
+      ...heir,
+      share: heir.share + Math.floor(removedShare / remainingHeirs)
+    }));
+    
+    // Adjust shares to ensure they sum to 100%
+    const totalShare = updatedHeirs.reduce((sum, heir) => sum + heir.share, 0);
+    if (totalShare !== 100) {
+      updatedHeirs[0].share += (100 - totalShare);
+    }
+    
+    setNewPlan({
+      ...newPlan,
+      heirs: updatedHeirs
+    });
+  };
+  
+  // Function to update heir name
+  const updateHeirName = (index: number, name: string) => {
+    const updatedHeirs = [...newPlan.heirs];
+    updatedHeirs[index] = {
+      ...updatedHeirs[index],
+      name
+    };
+    
+    setNewPlan({
+      ...newPlan,
+      heirs: updatedHeirs
+    });
+  };
+
+  // Function to update heir address
+  const updateHeirAddress = (index: number, address: string) => {
+    const updatedHeirs = [...newPlan.heirs];
+    updatedHeirs[index] = {
+      ...updatedHeirs[index],
+      address
+    };
+    
+    setNewPlan({
+      ...newPlan,
+      heirs: updatedHeirs
+    });
+  };
 
   return (
     <Box 
@@ -294,6 +481,8 @@ export default function CreatePlan() {
           mb={6}
           borderRadius="lg"
           boxShadow="sm"
+          index={tabIndex}
+          onChange={handleTabChange}
         >
           <TabList>
             <Tab>1. Fund Allocation</Tab>
@@ -310,6 +499,55 @@ export default function CreatePlan() {
                   <Heading size="md">Allocation Settings</Heading>
                   <Text color={subTextColor}>Decide how much of your Bitcoin to allocate to this inheritance plan</Text>
                 </VStack>
+
+                {isProdMode && (
+                  <Card p={4} borderRadius="lg" borderWidth="1px" borderColor={cardBorder}>
+                    <CardHeader pb={2} px={2}>
+                      <Heading size="sm" color={highlightColor}>
+                        Connect Your Bitcoin Wallet
+                      </Heading>
+                    </CardHeader>
+                    <CardBody pt={0} px={2}>
+                      <VStack spacing={4} align="stretch">
+                        <FormControl>
+                          <FormLabel fontSize="sm">Wallet Type</FormLabel>
+                          <Select 
+                            placeholder="Select wallet type"
+                            focusBorderColor={inputFocusBorderColor}
+                          >
+                            <option value="btcpay">BTCPay Server</option>
+                            <option value="electrum">Electrum</option>
+                            <option value="coldcard">Coldcard</option>
+                            <option value="ledger">Ledger</option>
+                            <option value="trezor">Trezor</option>
+                            <option value="other">Other</option>
+                          </Select>
+                        </FormControl>
+                        
+                        <FormControl>
+                          <FormLabel fontSize="sm">Bitcoin Address (optional)</FormLabel>
+                          <Input 
+                            placeholder="Enter your Bitcoin address"
+                            focusBorderColor={inputFocusBorderColor}
+                          />
+                          <FormHelperText>
+                            Provide a Bitcoin address to receive funds if you're not connecting a hardware wallet
+                          </FormHelperText>
+                        </FormControl>
+                        
+                        <HStack justify="flex-end">
+                          <Button 
+                            colorScheme="blue"
+                            size="sm"
+                            leftIcon={<Icon as={FaLock} />}
+                          >
+                            Connect Wallet
+                          </Button>
+                        </HStack>
+                      </VStack>
+                    </CardBody>
+                  </Card>
+                )}
 
                 <FormControl>
                   <FormLabel fontWeight="semibold">
@@ -357,22 +595,22 @@ export default function CreatePlan() {
                   <Box bg={statBg} p={4} borderRadius="lg">
                     <HStack>
                       <Text fontWeight="semibold" minW="180px">Custom percentage:</Text>
-                  <NumberInput 
-                    value={newPlan.allocationPercentage}
-                    onChange={handleAllocationPercentageChange}
+                      <NumberInput 
+                        value={newPlan.allocationPercentage}
+                        onChange={handleAllocationPercentageChange}
                         min={1}
-                    max={100}
-                    precision={0}
-                    step={1}
+                        max={100}
+                        precision={0}
+                        step={1}
                         focusBorderColor={inputFocusBorderColor}
                         maxW="150px"
-                  >
-                    <NumberInputField />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
+                      >
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
                       <Text fontWeight="semibold">%</Text>
                     </HStack>
                   </Box>
@@ -382,10 +620,24 @@ export default function CreatePlan() {
                   <Alert status="info" borderRadius="md">
                     <AlertIcon />
                     <AlertDescription>
-                      Your hardware wallet will need to sign a transaction to separate these funds into a dedicated inheritance plan multisig.
+                      {isProdMode 
+                        ? "Your hardware wallet will need to sign a transaction to separate these funds into a dedicated inheritance plan multisig." 
+                        : "In Demo Mode, simulated Bitcoin will be used. Switch to Production Mode to use real Bitcoin."}
                     </AlertDescription>
                   </Alert>
-              </Box>
+                </Box>
+                
+                {/* Add Next button */}
+                <Flex justify="flex-end" pt={4}>
+                  <Button 
+                    colorScheme="brand" 
+                    onClick={goToNextTab}
+                    rightIcon={<ChevronRightIcon />}
+                    size="lg"
+                  >
+                    Next: Heirs & Distribution
+                  </Button>
+                </Flex>
               </VStack>
             </TabPanel>
             
@@ -397,56 +649,93 @@ export default function CreatePlan() {
                   <Text color={subTextColor}>Configure how your Bitcoin will be distributed among your heirs</Text>
                 </VStack>
               
+                <Flex justify="space-between" align="center" mb={4}>
+                  <Text fontWeight="semibold">Current Heirs: {newPlan.heirs.length}</Text>
+                  <Button
+                    onClick={addNewHeir}
+                    colorScheme="green"
+                    leftIcon={<AddIcon />}
+                    size="sm"
+                  >
+                    Add Heir
+                  </Button>
+                </Flex>
+              
                 <FormControl>
-                  <FormLabel fontWeight="semibold">Distribution Percentages</FormLabel>
-                  <Text color={subTextColor} mb={4}>
-                    Adjust the slider to change how funds will be divided between heirs
-                </Text>
+                  <FormLabel fontWeight="semibold">Heirs List</FormLabel>
                   
-                  <VStack spacing={6} align="stretch" bg={statBg} p={4} borderRadius="lg">
-                    <Grid templateColumns="1fr auto 1fr" gap={4} alignItems="center">
-                      <GridItem>
-                        <VStack align="flex-start">
-                          <Text fontWeight="semibold">{newPlan.heirs[0].name}</Text>
-                          <HStack>
-                            <Badge colorScheme="brand" fontSize="md" px={2} borderRadius="md">
-                              {newPlan.heirs[0].share}%
-                            </Badge>
-                          </HStack>
-                        </VStack>
-                      </GridItem>
-                      
-                      <GridItem>
-                        <Icon as={FaPercent} color={highlightColor} boxSize={5} />
-                      </GridItem>
-                      
-                      <GridItem>
-                        <VStack align="flex-end">
-                          <Text fontWeight="semibold">{newPlan.heirs[1].name}</Text>
-                          <HStack>
-                            <Badge colorScheme="blue" fontSize="md" px={2} borderRadius="md">
-                              {newPlan.heirs[1].share}%
-                            </Badge>
-                          </HStack>
-                        </VStack>
-                      </GridItem>
-                    </Grid>
-                    
-                      <Slider 
-                        value={newPlan.heirs[0].share}
-                        min={0}
-                        max={100}
-                        step={5}
-                      onChange={(value) => handleHeirShareChange(0, value)}
-                      colorScheme="brand"
+                  <VStack spacing={4} align="stretch">
+                    {newPlan.heirs.map((heir, idx) => (
+                      <Box 
+                        key={idx}
+                        p={4} 
+                        borderWidth="1px" 
+                        borderRadius="lg" 
+                        borderColor={cardBorder}
+                        bg={statBg}
                       >
-                      <SliderTrack h={3} borderRadius="full">
-                          <SliderFilledTrack />
-                        </SliderTrack>
-                      <SliderThumb boxSize={6} />
-                      </Slider>
+                        <VStack spacing={4} align="stretch">
+                          <Flex justify="space-between" align="center">
+                            <HStack>
+                              <FormControl w="200px">
+                                <FormLabel fontSize="sm">Heir Name</FormLabel>
+                                <Input 
+                                  value={heir.name} 
+                                  onChange={(e) => updateHeirName(idx, e.target.value)}
+                                  size="sm"
+                                  placeholder="Enter heir name"
+                                />
+                              </FormControl>
+                              <Badge colorScheme={idx === 0 ? "brand" : idx === 1 ? "blue" : "green"} fontSize="md" px={2} borderRadius="md">
+                                {heir.share}%
+                              </Badge>
+                            </HStack>
+                            
+                            {newPlan.heirs.length > 2 && (
+                              <IconButton
+                                aria-label="Remove heir"
+                                icon={<Icon as={FaTrash} />}
+                                onClick={() => removeHeir(idx)}
+                                colorScheme="red"
+                                variant="ghost"
+                                size="sm"
+                              />
+                            )}
+                          </Flex>
+                          
+                          <Box>
+                            <FormLabel fontSize="sm">Share Percentage</FormLabel>
+                            <Slider 
+                              value={heir.share}
+                              min={1}
+                              max={100}
+                              step={1}
+                              onChange={(value) => handleHeirShareChange(idx, value)}
+                              colorScheme={idx === 0 ? "brand" : idx === 1 ? "blue" : "green"}
+                            >
+                              <SliderTrack h={2} borderRadius="full">
+                                <SliderFilledTrack />
+                              </SliderTrack>
+                              <SliderThumb boxSize={5} />
+                            </Slider>
+                          </Box>
+                        </VStack>
+                      </Box>
+                    ))}
                   </VStack>
                 </FormControl>
+                
+                <Box py={4}>
+                  <Alert status="info" borderRadius="md">
+                    <AlertIcon />
+                    <VStack align="start" spacing={1}>
+                      <Text fontWeight="medium">Distribution Information</Text>
+                      <Text fontSize="sm">
+                        In production mode, you can add as many heirs as you need. Each heir will receive their specified percentage of the inheritance.
+                      </Text>
+                    </VStack>
+                  </Alert>
+                </Box>
                 
                 <FormControl>
                   <FormLabel fontWeight="semibold">Leave a Message for Heirs</FormLabel>
@@ -462,6 +751,24 @@ export default function CreatePlan() {
                     focusBorderColor={inputFocusBorderColor}
                   />
                 </FormControl>
+                
+                {/* Add Next/Prev buttons */}
+                <Flex justify="space-between" pt={4}>
+                  <Button 
+                    variant="outline" 
+                    onClick={goToPrevTab}
+                    leftIcon={<ChevronLeftIcon />}
+                  >
+                    Previous
+                  </Button>
+                  <Button 
+                    colorScheme="brand" 
+                    onClick={goToNextTab}
+                    rightIcon={<ChevronRightIcon />}
+                  >
+                    Next: Execution Settings
+                  </Button>
+                </Flex>
               </VStack>
             </TabPanel>
             
@@ -541,14 +848,14 @@ export default function CreatePlan() {
                         {newPlan.scheduledExecution.type === 'scheduled' && (
                           <FormControl pl={6}>
                             <Input
-                              type="date"
+                              type="datetime-local"
                               min={minDate}
                               value={newPlan.scheduledExecution.scheduledDate || ''}
                               onChange={handleScheduledDateChange}
                               focusBorderColor={inputFocusBorderColor}
                             />
                             <FormHelperText>
-                              Choose a future date when the plan should automatically execute
+                              Choose a future date and time when the plan should automatically execute (UTC timezone)
                             </FormHelperText>
                           </FormControl>
                         )}
@@ -600,6 +907,24 @@ export default function CreatePlan() {
                     </Flex>
                 </Stack>
                 </FormControl>
+                
+                {/* Add Next/Prev buttons */}
+                <Flex justify="space-between" pt={4}>
+                  <Button 
+                    variant="outline" 
+                    onClick={goToPrevTab}
+                    leftIcon={<ChevronLeftIcon />}
+                  >
+                    Previous
+                  </Button>
+                  <Button 
+                    colorScheme="brand" 
+                    onClick={goToNextTab}
+                    rightIcon={<ChevronRightIcon />}
+                  >
+                    Next: Review & Create
+                  </Button>
+                </Flex>
               </VStack>
             </TabPanel>
             
@@ -671,7 +996,11 @@ export default function CreatePlan() {
                             <Text>
                               <Text as="span" fontWeight="semibold">Date: </Text>
                               {newPlan.scheduledExecution.scheduledDate ? 
-                                new Date(newPlan.scheduledExecution.scheduledDate).toLocaleDateString() : 
+                                new Date(newPlan.scheduledExecution.scheduledDate).toLocaleString(undefined, {
+                                  dateStyle: 'medium',
+                                  timeStyle: 'medium',
+                                  timeZone: 'UTC'
+                                }) + ' UTC' : 
                                 'Not set'}
                             </Text>
                           )}
@@ -715,20 +1044,30 @@ export default function CreatePlan() {
               </Box>
                 )}
                 
+                {/* Update buttons */}
                 <Flex 
                   justify="space-between" 
                   direction={{ base: "column", md: "row" }}
                   gap={{ base: 4, md: 0 }}
                   pt={4}
                 >
+                  <HStack>
+                    <Button 
+                      variant="outline" 
+                      onClick={goToPrevTab}
+                      leftIcon={<ChevronLeftIcon />}
+                    >
+                      Previous
+                    </Button>
               <Button 
                 as={Link} 
                 href="/dashboard" 
                 variant="outline"
-                    colorScheme="gray"
+                      colorScheme="gray"
               >
                 Cancel
               </Button>
+                  </HStack>
                   
               <Button 
                     colorScheme="brand"

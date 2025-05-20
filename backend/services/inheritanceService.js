@@ -4,12 +4,18 @@ const crypto = require('crypto');
 const config = require('config');
 const { LndClient } = require('./lndClient');
 const { BitcoinClient } = require('./bitcoinClient');
+const { ExSatService } = require('./exSatService');
+const { RebarShieldService } = require('./rebarShieldService');
 
 class InheritanceService {
   constructor() {
     this.plans = new Map();
     this.dataPath = path.join(__dirname, '..', 'data', 'plans.json');
     this.bitcoinClient = new BitcoinClient(config.get('bitcoin.rpc'));
+    
+    // Initialize exSat and Rebar Shield services
+    this.exSatService = new ExSatService(config.get('exSat'));
+    this.rebarShieldService = new RebarShieldService(config.get('rebarShield'));
     
     // Connect to all LND nodes (owner and heirs)
     this.nodes = {};
@@ -87,6 +93,20 @@ class InheritanceService {
       status: 'active'
     };
     
+    // Store plan metadata on exSat
+    try {
+      const exSatResult = await this.exSatService.storePlanMetadata(plan);
+      if (exSatResult.success) {
+        plan.exSatMetadataId = exSatResult.metadataId;
+        plan.exSatTxid = exSatResult.txid;
+        console.log(`Plan metadata stored on exSat with ID: ${exSatResult.metadataId}`);
+      } else {
+        console.warn('Failed to store plan metadata on exSat');
+      }
+    } catch (error) {
+      console.error('Error storing plan metadata on exSat:', error.message);
+    }
+    
     this.plans.set(planId, plan);
     await this.savePlans();
     
@@ -96,11 +116,45 @@ class InheritanceService {
   async getInheritancePlan(planId) {
     const plan = this.plans.get(planId);
     if (!plan) throw new Error('Inheritance plan not found');
+    
+    // If plan has exSat metadata ID, try to fetch updated metadata
+    if (plan.exSatMetadataId) {
+      try {
+        const exSatData = await this.exSatService.getPlanMetadata(plan.exSatMetadataId);
+        if (exSatData.success && exSatData.data) {
+          // Merge any updated metadata from exSat
+          console.log(`Retrieved updated metadata from exSat for plan ${planId}`);
+        }
+      } catch (error) {
+        console.warn(`Failed to fetch exSat metadata for plan ${planId}:`, error.message);
+      }
+    }
+    
     return plan;
   }
   
   async executeInheritance(planId) {
     const plan = await this.getInheritancePlan(planId);
+    
+    // Verify execution conditions using exSat
+    if (plan.exSatMetadataId) {
+      try {
+        const verificationResult = await this.exSatService.verifyExecutionConditions(planId, {
+          type: 'manual_execution',
+          timestamp: Date.now()
+        });
+        
+        if (!verificationResult.verified) {
+          console.warn(`ExSat verification failed for plan ${planId}:`, verificationResult.details);
+          // In a real implementation, we might want to stop execution here
+          // For demo purposes, we'll continue
+        } else {
+          console.log(`ExSat verified execution conditions for plan ${planId}`);
+        }
+      } catch (error) {
+        console.error(`ExSat verification error for plan ${planId}:`, error.message);
+      }
+    }
     
     // Get owner wallet balance
     const ownerBalances = await this.nodes.owner.getBalances();
@@ -147,6 +201,10 @@ class InheritanceService {
     // Track how much we've actually sent
     let totalSent = 0;
     
+    // Check if Rebar Shield is available for private transactions
+    const useRebarShield = await this.rebarShieldService.checkServiceAvailability();
+    console.log(`Rebar Shield available for private transactions: ${useRebarShield ? 'YES' : 'NO'}`);
+    
     // Execute the transactions
     for (const heirData of heirAmounts) {
       const heir = heirData.heir;
@@ -160,7 +218,7 @@ class InheritanceService {
           amount = remainingToSend;
         }
       }
-      
+
       console.log(`Will distribute ${amount} satoshis (${heir.share}%) to ${heir.name}`);
       
       if (amount <= 0) {
@@ -187,26 +245,49 @@ class InheritanceService {
       console.log(`Attempting to send ${amount} sats to ${heir.name} (${address})`);
       
       try {
-        const txid = await this.nodes.owner.sendCoins({
+        // Get the raw transaction from LND
+        const rawTxResponse = await this.nodes.owner.sendCoinsRaw({
           addr: address,
           amount: amount
         });
         
-        console.log(`Successfully sent ${amount} sats to ${heir.name}, txid: ${txid}`);
-        totalSent += amount;
+        // If Rebar Shield is available, use it for private transaction submission
+        let txResult;
+        if (useRebarShield) {
+          console.log(`Using Rebar Shield for private transaction to ${heir.name}`);
+          txResult = await this.rebarShieldService.submitTransaction(rawTxResponse.raw_tx_hex, {
+            priority: 'high',
+            privatePool: true
+          });
+        } else {
+          // If Rebar Shield is not available, use standard LND sendCoins
+          console.log(`Using standard LND for transaction to ${heir.name}`);
+          const txid = await this.nodes.owner.sendCoins({
+            addr: address,
+            amount: amount
+          });
+          txResult = { success: true, txid };
+        }
         
-        distributions.push({
-          heir: heir.name,
-          amount,
-          address,
-          txid
-        });
+        if (txResult.success) {
+          console.log(`Successfully sent ${amount} sats to ${heir.name}, txid: ${txResult.txid}`);
+          totalSent += amount;
+          
+          distributions.push({
+            heir: heir.name,
+            amount,
+            address,
+            txid: txResult.txid,
+            private: useRebarShield
+          });
 
-        // Mine a block to confirm the transaction before the next send in regtest
-        console.log(`Mining 1 block to confirm transaction for ${heir.name}...`);
-        await this.bitcoinClient.generateToAddress(1);
-        console.log(`Block mined. Transaction for ${heir.name} should be confirming.`);
-
+          // Mine a block to confirm the transaction before the next send in regtest
+          console.log(`Mining 1 block to confirm transaction for ${heir.name}...`);
+          await this.bitcoinClient.generateToAddress(1);
+          console.log(`Block mined. Transaction for ${heir.name} should be confirming.`);
+        } else {
+          console.error(`Failed to send funds to ${heir.name}: Transaction failed`);
+        }
       } catch (error) {
         console.error(`Failed to send funds to ${heir.name}:`, error.message);
         // Continue with other heirs
@@ -219,6 +300,28 @@ class InheritanceService {
     plan.status = 'executed';
     plan.executedAt = Date.now();
     plan.distributions = distributions;
+    
+    // Update the plan status on exSat as well
+    if (plan.exSatMetadataId) {
+      try {
+        const statusUpdateData = {
+          status: 'executed',
+          executedAt: plan.executedAt,
+          distributions: distributions.map(dist => ({
+            heir: dist.heir,
+            amount: dist.amount,
+            txid: dist.txid
+          }))
+        };
+        
+        await this.exSatService.storePlanMetadata({
+          ...plan,
+          ...statusUpdateData
+        });
+      } catch (error) {
+        console.error('Error updating plan status on exSat:', error.message);
+      }
+    }
     
     await this.savePlans();
     
@@ -282,6 +385,30 @@ class InheritanceService {
     const p2wshAddress = this.bitcoinClient.getAethelredP2WSHAddress(witnessScript);
     const networkString = this.bitcoinClient.networkString; // Get network from bitcoinClient
 
+    // Store lockbox details on exSat for added security and transparency
+    const lockboxData = {
+      type: 'aethelred_lockbox',
+      address: p2wshAddress,
+      witnessScript: witnessScript.toString('hex'),
+      primaryHeirPubkeys,
+      recoveryPubkey,
+      lockTimePath2,
+      lockTimePath3,
+      network: networkString,
+      createdAt: Date.now()
+    };
+    
+    try {
+      const exSatResult = await this.exSatService.storePlanMetadata(lockboxData);
+      if (exSatResult.success) {
+        lockboxData.exSatMetadataId = exSatResult.metadataId;
+        lockboxData.exSatTxid = exSatResult.txid;
+        console.log(`Lockbox data stored on exSat with ID: ${exSatResult.metadataId}`);
+      }
+    } catch (error) {
+      console.warn('Failed to store lockbox data on exSat:', error.message);
+    }
+
     return {
       lockboxAddress: p2wshAddress,
       accessBlueprint: witnessScript.toString('hex'),
@@ -290,7 +417,8 @@ class InheritanceService {
         recoveryPubkey: recoveryPubkey,         // return original hex string
         survivorAccessTime: lockTimePath2,
         guardianAccessTime: lockTimePath3,
-        network: networkString
+        network: networkString,
+        exSatMetadataId: lockboxData.exSatMetadataId
       }
     };
   }

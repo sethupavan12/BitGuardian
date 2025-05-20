@@ -6,11 +6,11 @@ const server = http.createServer((req, res) => {
   res.end(JSON.stringify({ 
     status: 'ok', 
     message: 'BitGuardian simple server is running!',
-    port: 3001
+    port: 3002
   }));
 });
 
-// Listen on port 3001
-server.listen(3001, () => {
-  console.log('Simple server running on port 3001');
+// Listen on port 3002
+server.listen(3002, () => {
+  console.log('Simple server running on port 3002');
 }); 

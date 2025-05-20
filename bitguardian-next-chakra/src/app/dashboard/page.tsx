@@ -38,6 +38,9 @@ import Link from 'next/link'
 import { RepeatIcon, AddIcon } from '@chakra-ui/icons'
 import { FaClock, FaUserFriends, FaPercent, FaShieldAlt } from 'react-icons/fa'
 
+// Custom components
+import SponsorIntegrations from '@/components/SponsorIntegrations'
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
 
 interface Heir {
@@ -104,7 +107,7 @@ export default function Dashboard() {
       setError(null)
       
       try {
-        const response = await axios.get(`${API_URL}/inheritance/plans`)
+      const response = await axios.get(`${API_URL}/inheritance/plans`)
         // Ensure data.data is an array, use empty array if not
         setPlans(Array.isArray(response.data.data) ? response.data.data : [])
       } catch (apiError) {
@@ -180,6 +183,43 @@ export default function Dashboard() {
     }
   }
 
+  // Add statistics calculation functions
+  const getTotalBitcoinInherited = (): number => {
+    if (!plans || plans.length === 0) return 0;
+    return plans.reduce((total, plan) => {
+      if (plan.distributions && plan.distributions.length > 0) {
+        const planTotal = plan.distributions.reduce((sum, dist) => sum + (dist.amount || 0), 0);
+        return total + planTotal;
+      }
+      return total;
+    }, 0);
+  };
+
+  const getTotalInheritanceTransactions = (): number => {
+    if (!plans || plans.length === 0) return 0;
+    return plans.reduce((total, plan) => {
+      if (plan.distributions && plan.distributions.length > 0) {
+        return total + plan.distributions.length;
+      }
+      return total;
+    }, 0);
+  };
+
+  const getExecutedPlansCount = (): number => {
+    if (!plans || plans.length === 0) return 0;
+    return plans.filter(plan => plan.status === 'executed').length;
+  };
+
+  // Function to sort plans by creation date (newest first)
+  const getSortedPlans = (): InheritancePlan[] => {
+    if (!plans || plans.length === 0) return [];
+    return [...plans].sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  };
+
+  const sortedPlans = getSortedPlans();
+
   return (
     <Box as="main" bg={mainBg} minH="calc(100vh - 64px)">
       <Box 
@@ -195,6 +235,78 @@ export default function Dashboard() {
       </Box>
 
       <Container maxW="container.xl" pb={12}>
+        {/* Statistics Cards */}
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={8}>
+          <Card borderRadius="lg" overflow="hidden" boxShadow="md" bg={cardBg} borderColor={cardBorder} borderWidth="1px">
+            <CardHeader bg={headerBg} py={4}>
+              <Flex align="center">
+                <Icon as={FaShieldAlt} color={highlightColor} mr={2} />
+                <Heading size="sm">Total Plans</Heading>
+              </Flex>
+            </CardHeader>
+            <CardBody>
+              <Stat>
+                <StatNumber fontSize="3xl" fontWeight="bold">{plans.length}</StatNumber>
+                <StatLabel color={subTextColor}>Inheritance Plans Created</StatLabel>
+              </Stat>
+            </CardBody>
+          </Card>
+          
+          <Card borderRadius="lg" overflow="hidden" boxShadow="md" bg={cardBg} borderColor={cardBorder} borderWidth="1px">
+            <CardHeader bg={headerBg} py={4}>
+              <Flex align="center">
+                <Icon as={FaUserFriends} color={highlightColor} mr={2} />
+                <Heading size="sm">Total Heirs</Heading>
+              </Flex>
+            </CardHeader>
+            <CardBody>
+              <Stat>
+                <StatNumber fontSize="3xl" fontWeight="bold">
+                  {plans.reduce((total, plan) => total + (plan.heirs?.length || 0), 0)}
+                </StatNumber>
+                <StatLabel color={subTextColor}>Designated Beneficiaries</StatLabel>
+              </Stat>
+            </CardBody>
+          </Card>
+          
+          <Card borderRadius="lg" overflow="hidden" boxShadow="md" bg={cardBg} borderColor={cardBorder} borderWidth="1px">
+            <CardHeader bg={headerBg} py={4}>
+              <Flex align="center">
+                <Icon as={FaPercent} color={highlightColor} mr={2} />
+                <Heading size="sm">Total BTC Inherited</Heading>
+              </Flex>
+            </CardHeader>
+            <CardBody>
+              <Stat>
+                <StatNumber fontSize="3xl" fontWeight="bold">
+                  {getTotalBitcoinInherited().toLocaleString()} <Text as="span" fontSize="lg">sats</Text>
+                </StatNumber>
+                <StatLabel color={subTextColor}>Across All Plans</StatLabel>
+              </Stat>
+            </CardBody>
+          </Card>
+          
+          <Card borderRadius="lg" overflow="hidden" boxShadow="md" bg={cardBg} borderColor={cardBorder} borderWidth="1px">
+            <CardHeader bg={headerBg} py={4}>
+              <Flex align="center">
+                <Icon as={FaClock} color={highlightColor} mr={2} />
+                <Heading size="sm">Executed Plans</Heading>
+              </Flex>
+            </CardHeader>
+            <CardBody>
+              <Stat>
+                <StatNumber fontSize="3xl" fontWeight="bold">{getExecutedPlansCount()}</StatNumber>
+                <StatLabel color={subTextColor}>Completed Inheritance Transactions</StatLabel>
+              </Stat>
+            </CardBody>
+          </Card>
+        </SimpleGrid>
+        
+        {/* Sponsor Integrations Section */}
+        <Box mb={8}>
+          <SponsorIntegrations />
+        </Box>
+
         <Flex 
           justify="space-between" 
           align={{ base: "flex-start", md: "center" }} 
@@ -272,7 +384,7 @@ export default function Dashboard() {
           </Card>
         ) : (
           <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={6}>
-            {plans.map((plan) => (
+            {sortedPlans.map((plan) => (
               <Card 
                 key={plan.id} 
                 borderRadius="xl" 
@@ -281,6 +393,7 @@ export default function Dashboard() {
                 borderColor={cardBorder}
                 borderWidth="1px"
                 bg={cardBg}
+                opacity={plan.status === 'executed' ? 0.8 : 1}
               >
                 <CardHeader bg={headerBg} py={4} px={6}>
                   <Flex justify="space-between" align="center">
@@ -375,7 +488,9 @@ export default function Dashboard() {
                                 Address: <Box as="span" fontFamily="mono">{dist.address}</Box>
                           </Text>
                               <Text>
-                                Tx: <Box as="span" fontFamily="mono">{dist.txid?.substring(0, 10)}...</Box>
+                                Tx: <Box as="span" fontFamily="mono" cursor="pointer" onClick={() => window.open(`https://mempool.space/testnet/tx/${dist.txid}`, '_blank')}>
+                                  {dist.txid}
+                                </Box>
                           </Text>
                             </VStack>
                         </Box>
