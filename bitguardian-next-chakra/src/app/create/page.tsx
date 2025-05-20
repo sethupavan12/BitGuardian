@@ -506,7 +506,7 @@ export default function CreatePlan() {
                       <Heading size="sm" color={highlightColor}>
                         Connect Your Bitcoin Wallet
                       </Heading>
-                    </CardHeader>
+          </CardHeader>
                     <CardBody pt={0} px={2}>
                       <VStack spacing={4} align="stretch">
                         <FormControl>
@@ -595,22 +595,22 @@ export default function CreatePlan() {
                   <Box bg={statBg} p={4} borderRadius="lg">
                     <HStack>
                       <Text fontWeight="semibold" minW="180px">Custom percentage:</Text>
-                      <NumberInput 
-                        value={newPlan.allocationPercentage}
-                        onChange={handleAllocationPercentageChange}
+                  <NumberInput 
+                    value={newPlan.allocationPercentage}
+                    onChange={handleAllocationPercentageChange}
                         min={1}
-                        max={100}
-                        precision={0}
-                        step={1}
+                    max={100}
+                    precision={0}
+                    step={1}
                         focusBorderColor={inputFocusBorderColor}
                         maxW="150px"
-                      >
-                        <NumberInputField />
-                        <NumberInputStepper>
-                          <NumberIncrementStepper />
-                          <NumberDecrementStepper />
-                        </NumberInputStepper>
-                      </NumberInput>
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
                       <Text fontWeight="semibold">%</Text>
                     </HStack>
                   </Box>
@@ -625,8 +625,8 @@ export default function CreatePlan() {
                         : "In Demo Mode, simulated Bitcoin will be used. Switch to Production Mode to use real Bitcoin."}
                     </AlertDescription>
                   </Alert>
-                </Box>
-                
+              </Box>
+
                 {/* Add Next button */}
                 <Flex justify="flex-end" pt={4}>
                   <Button 
@@ -659,7 +659,7 @@ export default function CreatePlan() {
                   >
                     Add Heir
                   </Button>
-                </Flex>
+                    </Flex>
               
                 <FormControl>
                   <FormLabel fontWeight="semibold">Heirs List</FormLabel>
@@ -708,16 +708,16 @@ export default function CreatePlan() {
                             <Slider 
                               value={heir.share}
                               min={1}
-                              max={100}
+                        max={100}
                               step={1}
                               onChange={(value) => handleHeirShareChange(idx, value)}
                               colorScheme={idx === 0 ? "brand" : idx === 1 ? "blue" : "green"}
-                            >
+                      >
                               <SliderTrack h={2} borderRadius="full">
-                                <SliderFilledTrack />
-                              </SliderTrack>
+                          <SliderFilledTrack />
+                        </SliderTrack>
                               <SliderThumb boxSize={5} />
-                            </Slider>
+                      </Slider>
                           </Box>
                         </VStack>
                       </Box>
@@ -735,8 +735,8 @@ export default function CreatePlan() {
                       </Text>
                     </VStack>
                   </Alert>
-                </Box>
-                
+              </Box>
+
                 <FormControl>
                   <FormLabel fontWeight="semibold">Leave a Message for Heirs</FormLabel>
                   <Text color={subTextColor} mb={4}>

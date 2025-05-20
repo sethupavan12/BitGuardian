@@ -1,0 +1,1 @@
+const config = require("config"); const LndClient = require("./services/lndClient"); async function main() { const aliceConfig = config.get("lnd.nodes.owner"); const aliceClient = new LndClient(aliceConfig); const balance = await aliceClient.getBalances(); console.log("Alice current balance:", balance); } main();

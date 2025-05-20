@@ -155,6 +155,41 @@ class BitcoinClient {
       throw error;
     }
   }
+  
+  /**
+   * Send bitcoins to an address
+   * @param {string} address - Target Bitcoin address
+   * @param {number} amount - Amount to send in BTC
+   * @returns {Promise<string>} - Transaction ID
+   */
+  async sendToAddress(address, amount) {
+    try {
+      console.log(`Sending ${amount} BTC to ${address} via Bitcoin Core RPC`);
+      const txid = await this.client.sendToAddress(address, amount);
+      console.log(`Bitcoin Core transaction sent: ${txid}`);
+      return txid;
+    } catch (error) {
+      console.error('Error in sendToAddress:', error.message);
+      throw error;
+    }
+  }
+  
+  /**
+   * Get raw transaction hex
+   * @param {string} txid - Transaction ID
+   * @returns {Promise<string>} - Raw transaction hex
+   */
+  async getRawTransaction(txid) {
+    try {
+      console.log(`Getting raw transaction for ${txid}`);
+      const rawTx = await this.client.getRawTransaction(txid);
+      console.log(`Retrieved raw transaction (${rawTx.substring(0, 20)}...)`);
+      return rawTx;
+    } catch (error) {
+      console.error('Error in getRawTransaction:', error.message);
+      throw error;
+    }
+  }
 }
 
 module.exports = { BitcoinClient, compileScript }; 

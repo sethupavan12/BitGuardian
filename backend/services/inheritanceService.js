@@ -273,18 +273,18 @@ class InheritanceService {
           console.log(`Successfully sent ${amount} sats to ${heir.name}, txid: ${txResult.txid}`);
           totalSent += amount;
           
-          distributions.push({
-            heir: heir.name,
-            amount,
-            address,
+        distributions.push({
+          heir: heir.name,
+          amount,
+          address,
             txid: txResult.txid,
             private: useRebarShield
-          });
+        });
 
-          // Mine a block to confirm the transaction before the next send in regtest
-          console.log(`Mining 1 block to confirm transaction for ${heir.name}...`);
-          await this.bitcoinClient.generateToAddress(1);
-          console.log(`Block mined. Transaction for ${heir.name} should be confirming.`);
+        // Mine a block to confirm the transaction before the next send in regtest
+        console.log(`Mining 1 block to confirm transaction for ${heir.name}...`);
+        await this.bitcoinClient.generateToAddress(1);
+        console.log(`Block mined. Transaction for ${heir.name} should be confirming.`);
         } else {
           console.error(`Failed to send funds to ${heir.name}: Transaction failed`);
         }

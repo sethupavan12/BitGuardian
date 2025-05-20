@@ -2073,5 +2073,269 @@
         }
       ]
     }
+  ],
+  [
+    "30e0d1bf-789f-4135-aea1-88ae6ef2339b",
+    {
+      "id": "30e0d1bf-789f-4135-aea1-88ae6ef2339b",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747776970602,
+      "updatedAt": 1747776970602,
+      "status": "active",
+      "exSatMetadataId": "exsat-meta-eb4ca2a40461a687",
+      "exSatTxid": "6733761e72e9170321e238da9930d13257c7bf691509ccf9c8cca51e8e9d9984"
+    }
+  ],
+  [
+    "05bdd337-6873-458c-a40c-15e3bef893c6",
+    {
+      "id": "05bdd337-6873-458c-a40c-15e3bef893c6",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 22
+        },
+        {
+          "name": "carol",
+          "share": 78
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747777242579,
+      "updatedAt": 1747777242579,
+      "status": "executed",
+      "exSatMetadataId": "exsat-meta-fd4b58fdfd4e8cd5",
+      "exSatTxid": "6a3943536557041321427f0227f6f19e332675d85bad4e79d146117796e8ddb0",
+      "executedAt": 1747777246423,
+      "distributions": [
+        {
+          "heir": "carol",
+          "amount": 82466251,
+          "address": "carol-address-ag6vk8ej",
+          "txid": "73ad9c93ec26e1e0a3b55bf2e2643e4cc7277746c12e4e544faca889bbb2bdff",
+          "private": true
+        }
+      ]
+    }
+  ],
+  [
+    "f95cb2cd-7961-4963-aae2-77ee2e566f0c",
+    {
+      "id": "f95cb2cd-7961-4963-aae2-77ee2e566f0c",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 70
+        },
+        {
+          "name": "carol",
+          "share": 30
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747777332645,
+      "updatedAt": 1747777332645,
+      "status": "executed",
+      "exSatMetadataId": "exsat-meta-42ff16cb71b1df07",
+      "exSatTxid": "c73e7685dfe37c7646789eb3b2dd1f85d747c39c4f85050592933942a47c5495",
+      "executedAt": 1747777334871,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 74008174,
+          "address": "bob-address-i54rjy3w",
+          "txid": "26bb887eb377663a7565f01b42c30d167f38f62df5f7a1f5140040b4a8fe6445",
+          "private": true
+        }
+      ]
+    }
+  ],
+  [
+    "e4a96211-2878-4fc3-b8fb-b3afad04487b",
+    {
+      "id": "e4a96211-2878-4fc3-b8fb-b3afad04487b",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 60
+        },
+        {
+          "name": "carol",
+          "share": 40
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 20
+      },
+      "createdAt": 1747777602889,
+      "updatedAt": 1747777602889,
+      "status": "executed",
+      "exSatMetadataId": "exsat-meta-dc21c1971cc68791",
+      "exSatTxid": "a2fa67d392eac1723d4ddab8f3a8b51c1d69150cb9e2e2a80925a222a8136a06",
+      "executedAt": 1747777607451,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 63435577,
+          "address": "bob-address-jnquvs95",
+          "txid": "c9675aa3a1cfa475f26f8d0a3e21fa17070f1c3c8c686cee2ae237a8545ab970",
+          "private": true
+        },
+        {
+          "heir": "carol",
+          "amount": 42290386,
+          "address": "carol-address-v556ij20",
+          "txid": "c0189dbea7003044a08f141d320cd0cf1ebc3361f39ba1257e47360c4a8e2e5c",
+          "private": true
+        }
+      ]
+    }
+  ],
+  [
+    "c3c97283-f66a-4941-94c7-bbb5a6ab3ecc",
+    {
+      "id": "c3c97283-f66a-4941-94c7-bbb5a6ab3ecc",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 8
+        },
+        {
+          "name": "carol",
+          "share": 92
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747777717623,
+      "updatedAt": 1747777717623,
+      "status": "executed",
+      "exSatMetadataId": "exsat-meta-976584a3ef0ccb0d",
+      "exSatTxid": "0b49f097765ff79739df47a3eb0cf8b8f3818a96c5f1212c6bf12a45e37b1798",
+      "executedAt": 1747777721050,
+      "distributions": [
+        {
+          "heir": "carol",
+          "amount": 97267885,
+          "address": "carol-address-yqy6w0u0",
+          "txid": "e9eaaaedcfdaad6a72edad3b2fa3e07b73587207799ef384f9bf5c873cbbb3e6",
+          "private": true
+        },
+        {
+          "heir": "bob",
+          "amount": 8458078,
+          "address": "bob-address-kz2v3o5x",
+          "txid": "c85eeebd95c155556fe94fffc6ea79c765d5e4159f347d725bfeca85cbb9dd8d",
+          "private": true
+        }
+      ]
+    }
+  ],
+  [
+    "0ecf7dbf-6972-495f-9a3e-66323ab5b85d",
+    {
+      "id": "0ecf7dbf-6972-495f-9a3e-66323ab5b85d",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 51
+        },
+        {
+          "name": "carol",
+          "share": 49
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 180,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747777967250,
+      "updatedAt": 1747777967250,
+      "status": "active",
+      "exSatMetadataId": "exsat-meta-c411e33c48da0c45",
+      "exSatTxid": "b43a5fc40918e41b27f145789377245ada1be3d5c8e17139941cb1f3a6b58823"
+    }
+  ],
+  [
+    "a1afbccd-8360-4aba-9f2d-cc28977b0c7f",
+    {
+      "id": "a1afbccd-8360-4aba-9f2d-cc28977b0c7f",
+      "ownerName": "alice",
+      "heirs": [
+        {
+          "name": "bob",
+          "share": 50
+        },
+        {
+          "name": "carol",
+          "share": 50
+        }
+      ],
+      "verificationSettings": {
+        "inactivityPeriod": 7,
+        "useBlockchainVerification": true,
+        "useEmailVerification": true,
+        "useTrustedContacts": false
+      },
+      "createdAt": 1747778157661,
+      "updatedAt": 1747778157661,
+      "status": "executed",
+      "exSatMetadataId": "exsat-meta-056934f9d3ffb5a9",
+      "exSatTxid": "68d82246bf79b371f79776b9980d9d8a7eb23a7c0edb785382a77c0f55c55578",
+      "executedAt": 1747778162349,
+      "distributions": [
+        {
+          "heir": "bob",
+          "amount": 52862981,
+          "address": "bob-address-nbi5dbkl",
+          "txid": "21cba0f2cab35acb16c21c15b012421b34f6380564393eed94d48015ceb320c2",
+          "private": true
+        },
+        {
+          "heir": "carol",
+          "amount": 52862982,
+          "address": "carol-address-ltu76a7f",
+          "txid": "e0d9c605003dcbefe01d9dd84ec43274fe18626a1a0d990f32e47757a0461bba",
+          "private": true
+        }
+      ]
+    }
   ]
 ]
